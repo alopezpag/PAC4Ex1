@@ -57,6 +57,7 @@ public class Superstar {
                 throw new SuperstarException(SuperstarException.MSG_ERR_BIRTH_NAME_NUMBERS);
             }
         }
+
         this.birthName = birthName;
     }
 
