@@ -17,15 +17,4 @@ public class SuperstarException extends Exception {
     public SuperstarException(String msg) {
         super(msg);
     }
-
-    // Optional: Constructor that accepts a message and a cause
-    /*public SuperstarException(String msg, Throwable cause) {
-        super(msg, cause);
-    }*/
-
-    // Optional: Overriding the getMessage() method to customize the error message
-    @Override
-    public String getMessage() {
-        return "SuperstarException: " + super.getMessage();
-    }
 }

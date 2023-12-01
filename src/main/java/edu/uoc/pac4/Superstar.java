@@ -2,6 +2,8 @@ package edu.uoc.pac4;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Superstar {
     public static final int BIRTH_NAME_MIN_LENGTH = 1;
@@ -21,26 +23,24 @@ public class Superstar {
     private double weight = 54;
     private String ringName;
 
-    public Superstar() {
+    public Superstar() throws SuperstarException {
         birthName = "Anonymous";
         birthDate = LocalDate.now().minus(Period.ofDays(1));
+        birthPlace = "New York";
         gender = Gender.FEMALE;
         height = 168;
         weight = 54;
         ringName = "Superstar";
     }
 
-    public Superstar(String birthName, LocalDate birthDate, String birthPlace, double height, double weight, String ringName) {
-        try {
-            setBirthName(birthName);
-            setBirthDate(birthDate);
-            setGender(gender);
-            setHeight(height);
-            setWeight(weight);
-            setRingName(ringName);
-        } catch (Exception e) {
-            System.out.println("test " + e.getMessage());
-        }
+    public Superstar(String birthName, LocalDate birthDate, String birthPlace, Gender gender, double height, double weight, String ringName) throws SuperstarException {
+        setBirthName(birthName);
+        setBirthDate(birthDate);
+        setBirthplace(birthPlace);
+        setGender(gender);
+        setHeight(height);
+        setWeight(weight);
+        setRingName(ringName);
     }
 
     public String getBirthName() {
@@ -48,7 +48,12 @@ public class Superstar {
     }
 
     public void setBirthName(String birthName) throws SuperstarException {
-        if (birthName.length() < BIRTH_NAME_MIN_LENGTH || birthName.length() > BIRTH_NAME_MAX_LENGTH) {
+        if (birthName == null) {
+            throw new SuperstarException(SuperstarException.MSG_ERR_BIRTH_NAME_NULL);
+        }
+        String buffer = birthName.trim();
+        // if (birthName.length().isEmpty) també seria correcte
+        if (buffer.length() < BIRTH_NAME_MIN_LENGTH || buffer.length() > BIRTH_NAME_MAX_LENGTH) {
             throw new SuperstarException(SuperstarException.MSG_ERR_BIRTH_NAME_LENGTH);
         }
 
@@ -58,23 +63,37 @@ public class Superstar {
             }
         }
 
-        this.birthName = birthName;
+        this.birthName = buffer;
     }
 
     public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthDate(LocalDate birthDate) throws SuperstarException {
+        if (birthDate == null || !birthDate.isBefore(LocalDate.now())) {
+            throw new SuperstarException(SuperstarException.MSG_ERR_BIRTH_DATE);
+        } else {
+            this.birthDate = birthDate;
+        }
     }
 
-    public String getBirthPlace() {
+    public String getBirthplace() {
         return birthPlace;
     }
 
-    public void setBirthPlace(String birthPlace) {
-        this.birthPlace = birthPlace;
+    public void setBirthplace(String birthPlace) throws SuperstarException {
+        if (birthPlace == null) {
+            throw new SuperstarException(SuperstarException.MSG_ERR_BIRTHPLACE_NULL);
+        }
+
+        int strLen = birthPlace.trim().length();
+
+        if (strLen < BIRTHPLACE_MIN_LENGTH || strLen > BIRTHPLACE_MAX_LENGTH) {
+            throw new SuperstarException(SuperstarException.MSG_ERR_BIRTHPLACE_LENGTH);
+        }
+
+        this.birthPlace = birthPlace.trim();
     }
 
     public Gender getGender() {
@@ -89,7 +108,11 @@ public class Superstar {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(double height) throws SuperstarException {
+        if (height <= HEIGHT_MIN_VALUE) {
+            throw new SuperstarException(SuperstarException.MSG_ERR_HEIGHT);
+        }
+
         this.height = height;
     }
 
@@ -97,7 +120,11 @@ public class Superstar {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(double weight) throws SuperstarException {
+        if (weight <= WEIGHT_MIN_VALUE) {
+            throw new SuperstarException(SuperstarException.MSG_ERR_WEIGHT);
+        }
+
         this.weight = weight;
     }
 
@@ -105,17 +132,37 @@ public class Superstar {
         return ringName;
     }
 
-    public void setRingName(String ringName) {
-        this.ringName = ringName;
+    public void setRingName(String ringName) throws SuperstarException {
+        if (ringName == null) {
+            throw new SuperstarException(SuperstarException.MSG_ERR_RING_NAME_NULL);
+        }
+
+        int numChars = ringName.trim().length();
+        if (numChars < RING_NAME_MIN_LENGTH || numChars > RING_NAME_MAX_LENGTH) {
+            throw new SuperstarException(SuperstarException.MSG_ERR_RING_NAME_LENGTH);
+        }
+
+        this.ringName = ringName.trim();
     }
 
-    /*@Override
+    @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Superstar other = (Superstar) obj;
+        return Objects.equals(this.birthName, other.birthName) &&
+                Double.compare(this.height, other.height) == 0 &&
+                Double.compare(this.weight, other.weight) == 0 &&
+                Objects.equals(this.birthDate, other.birthDate);
     }
 
     @Override
     public String toString() {
-        return super.toString();
-    }*/
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-uuuu");
+        String formattedDate = birthDate != null ? birthDate.format(formatter) : "null";
+        return "R\n" +
+                "Birth name: " + (birthName != null ? birthName : "null") + "\n" +
+                "Born: " + formattedDate + "\n" +
+                "B";
+    }
 }
