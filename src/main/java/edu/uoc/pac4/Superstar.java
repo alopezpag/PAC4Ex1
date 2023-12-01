@@ -17,7 +17,7 @@ public class Superstar {
 
     private String birthName;
     private LocalDate birthDate;
-    private String birthPlace;
+    private String birthplace;
     private Gender gender;
     private double height = 168;
     private double weight = 54;
@@ -26,17 +26,17 @@ public class Superstar {
     public Superstar() throws SuperstarException {
         birthName = "Anonymous";
         birthDate = LocalDate.now().minus(Period.ofDays(1));
-        birthPlace = "New York";
+        birthplace = "New York";
         gender = Gender.FEMALE;
         height = 168;
         weight = 54;
         ringName = "Superstar";
     }
 
-    public Superstar(String birthName, LocalDate birthDate, String birthPlace, Gender gender, double height, double weight, String ringName) throws SuperstarException {
+    public Superstar(String birthName, LocalDate birthDate, String birthplace, Gender gender, double height, double weight, String ringName) throws SuperstarException {
         setBirthName(birthName);
         setBirthDate(birthDate);
-        setBirthplace(birthPlace);
+        setBirthplace(birthplace);
         setGender(gender);
         setHeight(height);
         setWeight(weight);
@@ -79,7 +79,7 @@ public class Superstar {
     }
 
     public String getBirthplace() {
-        return birthPlace;
+        return birthplace;
     }
 
     public void setBirthplace(String birthPlace) throws SuperstarException {
@@ -93,7 +93,7 @@ public class Superstar {
             throw new SuperstarException(SuperstarException.MSG_ERR_BIRTHPLACE_LENGTH);
         }
 
-        this.birthPlace = birthPlace.trim();
+        this.birthplace = birthPlace.trim();
     }
 
     public Gender getGender() {
@@ -163,7 +163,6 @@ public class Superstar {
         return ringName.toUpperCase() + "\n\t" +
                 "Birth name: " + (birthName != null ? birthName : "N/A") + "\n\t" +
                 "Born: " + formattedDate + "\n\t      " +
-                (birthPlace != null ? birthPlace : "N/A");
+                (birthplace != null ? birthplace : "N/A");
     }
-
 }
