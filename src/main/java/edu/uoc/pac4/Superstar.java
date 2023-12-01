@@ -159,10 +159,11 @@ public class Superstar {
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-uuuu");
-        String formattedDate = birthDate != null ? birthDate.format(formatter) : "null";
-        return "R\n" +
-                "Birth name: " + (birthName != null ? birthName : "null") + "\n" +
-                "Born: " + formattedDate + "\n" +
-                "B";
+        String formattedDate = birthDate != null ? birthDate.format(formatter) : "N/A";
+        return ringName.toUpperCase() + "\n\t" +
+                "Birth name: " + (birthName != null ? birthName : "N/A") + "\n\t" +
+                "Born: " + formattedDate + "\n\t      " +
+                (birthPlace != null ? birthPlace : "N/A");
     }
+
 }
