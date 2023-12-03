@@ -19,8 +19,8 @@ public class Superstar {
     private LocalDate birthDate;
     private String birthplace;
     private Gender gender;
-    private double height = 168;
-    private double weight = 54;
+    private double height;
+    private double weight;
     private String ringName;
 
     public Superstar() throws SuperstarException {
